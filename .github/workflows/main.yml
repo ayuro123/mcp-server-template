@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Ping Render service
         run: |
-          curl -L https://fastmcp-server-cy6x.onrender.com/
+          curl -L --max-time 20 -H "Accept: text/event-stream" https://fastmcp-server-cy6x.onrender.com/mcp || true
