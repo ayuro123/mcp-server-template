@@ -39,6 +39,26 @@ def call_me(message: str) -> str:
     )
 
     return "Call placed"
+@mcp.tool
+def call_my_wife(message: str) -> str:
+    """Call my wife and read the message aloud."""
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    from_number = os.environ["TWILIO_FROM_NUMBER"]
+    to_number = os.environ["WIFE_PHONE_NUMBER"]
+
+    client = Client(account_sid, auth_token)
+
+    text = escape(message)[:800]
+    twiml = f'<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="alice">{text}</Say></Response>'
+
+    client.calls.create(
+        to=to_number,
+        from_=from_number,
+        twiml=twiml,
+    )
+
+    return "Called wife"
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     host = "0.0.0.0"
